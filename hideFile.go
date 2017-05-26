@@ -13,11 +13,13 @@ type Hider struct {
 	encryptionPassword string
 }
 
+// NewHider returns a new instance of a Hider
 func NewHider() *Hider {
 	return &Hider{}
 }
 
-func (h *Hider) Convert(file *os.File, out string, toType magicNumber) error {
+// Converts the file to the given type and writes it to the given location
+func (h *Hider) Convert(file *os.File, toType magicNumber, out string) error {
 	fileContent, err := ioutil.ReadAll(file)
 	if err != nil {
 		return err
@@ -29,7 +31,8 @@ func (h *Hider) Convert(file *os.File, out string, toType magicNumber) error {
 	return h.write(destinationFileName, newFileContent)
 }
 
-func (h *Hider) Deconvert(file *os.File, out string, fromType magicNumber) error {
+// Deconverts the file from the type and writes it to the given location
+func (h *Hider) Deconvert(file *os.File, fromType magicNumber, out string) error {
 	fileContent, err := ioutil.ReadAll(file)
 	if err != nil {
 		return err
@@ -41,6 +44,7 @@ func (h *Hider) Deconvert(file *os.File, out string, fromType magicNumber) error
 	return h.write(destinationFileName, newFileContent)
 }
 
+// write writes the content of the new file to the destination
 func (h *Hider) write(destinationFileName string, content []byte) error {
 	newFile, err := os.OpenFile(destinationFileName, os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
@@ -53,10 +57,12 @@ func (h *Hider) write(destinationFileName string, content []byte) error {
 	return err
 }
 
+// generates the name of the new file according to the wanted type
 func (h *Hider) generateFileName(file *os.File, toType magicNumber, out string) string {
 	return out + "/" + strings.TrimSuffix(filepath.Base(file.Name()), filepath.Ext(file.Name())) + "." + toType.Extension
 }
 
+// GetType returns the magicNumber to the given Typename
 func (h *Hider) GetType(name string) (magicNumber, error) {
 	for _, number := range magicNumberList {
 		if number.Name == name {
@@ -67,6 +73,7 @@ func (h *Hider) GetType(name string) (magicNumber, error) {
 	return magicNumber{}, errors.New("No element found")
 }
 
+// GetTypeList returns the list of currently supported types
 func (h *Hider) GetTypelist() []magicNumber {
 	return magicNumberList
 }

@@ -40,13 +40,13 @@ func main() {
 	}
 
 	if decode {
-		err = hider.Deconvert(file, out, toType)
+		err = hider.Deconvert(file, toType, out)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 	} else {
-		err = hider.Convert(file, out, toType)
+		err = hider.Convert(file, toType, out)
 		if err != nil {
 			log.Fatal(err)
 		}
