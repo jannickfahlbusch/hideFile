@@ -1,0 +1,23 @@
+image: golang:latest
+
+before_script:
+    - ln -s /builds /go/src/gitlab.com
+    - cd /go/src/gitlab.com/jannickfahlbusch/hideFile
+
+stages:
+    - test
+    - build
+
+format:
+    stage: test
+    script:
+        - go tool vet -composites=false -shadow=true *.go
+        - go test -race -v $(go list ./... | grep -v /vendor/)
+
+compile:
+    stage: build
+    script:
+        - go build -race -o hideFile cmd/*.go -o hideFile
+    artifacts:
+        paths:
+            - hideFile
