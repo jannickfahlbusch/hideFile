@@ -35,7 +35,7 @@ func (h *Hider) Deconvert(file *os.File, out string, fromType magicNumber) error
 		return err
 	}
 
-	newFileContent := fileContent[len(fromType.Extension)+1:]
+	newFileContent := fileContent[len(fromType.Extension):]
 	destinationFileName := h.generateFileName(file, fromType, out)
 
 	return h.write(destinationFileName, newFileContent)
