@@ -17,7 +17,7 @@ format:
 compile:
     stage: build
     script:
-        - go build -race -o hideFile cmd/*.go -o hideFile
+        - go build -race -o hideFile cmd/*.go
     artifacts:
         paths:
             - hideFile
